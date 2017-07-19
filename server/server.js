@@ -24,17 +24,4 @@ app.listen(PORT, () => {
 	console.log("Server started on port : ", PORT);
 });
 
-
-// newTodo.save().then((res) => {
-// 	console.log('Todo saved : ', res);
-// }, (err) => {
-// 	console.log('Unable to save todo : ', err);
-// });
-
-
-// var newUser = new User({email : 'slimane'});
-// newUser.save().then((res) => {
-// 	console.log("User saved : ", res);
-// }, (err) => {
-// 	console.log('Unable to save user : ', err);
-// });
+module.exports = { app };
