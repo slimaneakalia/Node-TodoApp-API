@@ -132,4 +132,40 @@ describe("DELETE /todos/:id", () => {
 			.expect(404)
 			.end(done);
 	});
-})
+});
+
+describe ('PATCH /todos/:id', () => {
+	it ('Should update the todo', (done) => {
+		var idStr = todos[0]._id.toHexString();
+		var txt = 'Hello world !!';
+		request(app)
+			.patch(`/todos/${idStr}`)
+			.send({ text : txt , completed : true })
+			.expect(200)
+			.expect((res) => {
+				var todoVar = res.body.todo;
+				expect(todoVar._id).toBe(idStr);
+				expect(todoVar.text).toBe(txt);
+				expect(todoVar.completed).toBe(true);
+				expect(todoVar.completedAt).toBeA('number');
+			})
+			.end(done);
+	});
+
+	it ('Should clear completedAt when todo is not completed', (done) => {
+		var idStr = todos[1]._id.toHexString();
+		var txt = 'Hello moon !!';
+		request(app)
+			.patch(`/todos/${idStr}`)
+			.send({ text : txt, completed : false})
+			.expect(200)
+			.expect((res) => {
+				var todoVar = res.body.todo;
+				expect(todoVar._id).toBe(idStr);
+				expect(todoVar.text).toBe(txt);
+				expect(todoVar.completed).toBe(false);
+				expect(todoVar.completedAt).toNotExist();
+			})
+			.end(done);
+	});
+});
