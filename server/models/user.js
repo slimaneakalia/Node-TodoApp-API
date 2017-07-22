@@ -37,7 +37,7 @@ userSchema.methods.generateAuthTokens = function (){
 	var user = this;
 	var access = 'auth';
 
-	var obj = { id : user._id.toHexString(), access };
+	var obj = { _id : user._id.toHexString(), access };
 	var token = jwt.sign(obj, 'HelloWorld!');
 
 	user.tokens.push({access, token});
@@ -48,6 +48,21 @@ userSchema.methods.toJSON = function (){
 	var user = this;
 	var userObj = user.toObject();
 	return _.pick(userObj, ['_id', 'email']);
+};
+
+userSchema.statics.findByToken = function (token){
+	var User = this;
+	var decoded;
+	try
+	{
+		decoded = jwt.verify(token, 'HelloWorld!');
+	}catch(e) { return Promise.reject(); }
+	console.log("decoded : ", decoded);
+	return User.findOne({
+		'_id' : decoded._id,
+		'tokens.token' : token,
+		'tokens.access' : 'auth'
+	});
 };
 
 var User = mongoose.model('User', userSchema);
