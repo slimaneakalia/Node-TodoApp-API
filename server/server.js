@@ -104,6 +104,11 @@ app.get('/users/me', authenticate, (req, res) => {
 	res.send(req.user);
 });
 
+app.post('/users/login', (req, res) => {
+	var user = _.pick(req.body, ['email', 'password']);
+	res.send(user);
+});
+
 app.listen(PORT, () => {
 	console.log("Server started on port : ", PORT);
 });
