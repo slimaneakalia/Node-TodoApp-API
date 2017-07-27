@@ -1,9 +1,10 @@
 const expect = require('expect');
 const request  = require('supertest');
 const { ObjectID } = require('mongodb');
-const { populateTodos, todos, populateUsers, users } = require('./seed/seed');
 
 const { app } = require('./../server');
+const { populateTodos, todos, populateUsers, users } = require('./seed/seed');
+
 const { Todo } = require('./../models/todo');
 const { User } = require('./../models/user');
 
@@ -113,7 +114,7 @@ describe("DELETE /todos/:id", () => {
 			})
 			.end((err, res) => {
 				if (err)
-					done(err);
+					return done(err);
 				Todo.findById(idStr).then((doc) => {
 					expect(doc).toNotExist();
 					done();
@@ -129,7 +130,7 @@ describe("DELETE /todos/:id", () => {
 			.expect(404)
 			.end((err, res) => {
 				if (err)
-					done(err);
+					return done(err);
 				Todo.findById(idStr).then((doc) => {
 					expect(doc).toExist();
 					done();

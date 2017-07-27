@@ -4,7 +4,6 @@ const { ObjectID } = require('mongodb');
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const PORT = process.env.PORT || 300;
 
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
@@ -134,8 +133,8 @@ app.delete('/users/me/token', authenticate, (req, res) => {
 	});
 });
 
-app.listen(PORT, () => {
-	console.log("Server started on port : ", PORT);
+app.listen(process.env.PORT, () => {
+	console.log("Server started on port : ", process.env.PORT);
 });
 
 module.exports = { app };
